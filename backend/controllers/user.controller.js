@@ -1,4 +1,5 @@
 import userService from "../services/user.service.js";
+import generateToken from "../utils/generateToken.js";
 
 class UserController{
 
@@ -22,7 +23,7 @@ class UserController{
             const{email, password} = req.body;
             const user = await userService.loginUser(email, password);
 
-            // TODOO: JWT
+            generateToken(res, user._id)
 
             res.status(200).json({
                 _id: user._id,
@@ -34,6 +35,24 @@ class UserController{
         } catch(error) {
             res.status(401).json({ message: error.message });
         }
+    }
+
+    async logout(req, res) {
+        res.cookie('jwt', '', {
+            httpOnly: true,
+            expires: new Date(0) 
+        });
+        res.status(200).json({ message: 'Déconnexion réussie' });
+    }
+
+    async getProfile(req, res) {
+        const user = {
+            _id: req.user._id,
+            username: req.user.username,
+            email: req.user.email,
+            role: req.user.role
+        };
+        res.status(200).json(user);
     }
 }
 
