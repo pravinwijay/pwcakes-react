@@ -17,7 +17,6 @@ class UserService {
             telephone,
             password: hashedPassword
         };
-
         return await userRepository.create(userToCreate);
     }
 
@@ -31,8 +30,29 @@ class UserService {
         if(!isMatch){
             throw new Error("Identifiants invalides.");
         }
-
         return user;
+    }
+
+    async getUserById(id){
+        const user = await userRepository.findById(id);
+        if (!user) throw new Error("Utilisateur non trouvé.");
+        return user;
+    }
+
+    async getAllUsers(){
+        return await userRepository.findAll();
+    }
+
+    async updateUserProfile(id, data){
+        const updatedUser = await userRepository.update(id, data);
+        if (!updatedUser) throw new Error("Utilisateur non trouvé.");
+        return updatedUser;
+    }
+
+    async deleteUser(id) {
+        const deletedUser = await userRepository.delete(id);
+        if (!deletedUser) throw new Error("Utilisateur non trouvé.");
+        return deletedUser;
     }
 }
 
