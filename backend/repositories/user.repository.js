@@ -16,6 +16,16 @@ class UserRepository {
     async findAll(){
         return await User.find({})
     }
-}
 
+    async update(id, updateData){
+        return await User.findByIdAndUpdate(id, updateData, {
+            new: true,
+            runValidators: true,
+        }).select("-password");
+    }
+
+    async delete(id){
+        return await User.findByIdAndDelete(id);
+    }
+}
 export default new UserRepository();
