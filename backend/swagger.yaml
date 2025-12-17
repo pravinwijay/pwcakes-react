@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  title: API PW CAKES
+  version: 1.0.0
+  description: API PW CAKES.
+  contact:
+    name: Support Technique
+
+servers:
+  - url: http://localhost:5001
+    description: Environnement de Développement
+
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: jwt
+
+security:
+  - cookieAuth: []
+
+
+paths:
+  /api/users:
+    post:
+      summary: Inscription
+      tags: [User]
+      security: [] 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, email, password]
+              properties:
+                username: { type: string, example: "Pravin" }
+                email: { type: string, example: "pravin@email.com" }
+                password: { type: string, example: "Azerty123!" }
+                telephone: { type: string, example: "0612345678" }
+      responses:
+        201:
+          description: Utilisateur créé avec succès
+        400:
+          description: Erreur de validation
+
+  /api/users/auth:
+    post:
+      summary: Connexion
+      tags: [User]
+      security: [] 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, example: "pravin@test.com" }
+                password: { type: string, example: "Azerty123!" }
+      responses:
+        200:
+          description: Connexion réussie 
+        401:
+          description: Identifiants invalides
+
+  /api/users/logout:
+    post:
+      summary: Déconnexion
+      tags: [User]
+      responses:
+        200: { description: Cookie supprimé }
+        401: { description: Non autorisé }
+
+  /api/users/profile:
+    get:
+      summary: Utilisateur connecté
+      tags: [User]
+      responses:
+        200:
+          description: Données du profil
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id: { type: string }
+                  username: { type: string }
+                  email: { type: string }
+                  role: { type: string }
+        401:
+          description: Non autorisé
