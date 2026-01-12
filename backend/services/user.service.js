@@ -39,11 +39,11 @@ class UserService {
         return user;
     }
 
-    async getAllUsers(){
+    async getAllUser(){
         return await userRepository.findAll();
     }
 
-    async updateUserProfile(id, data){
+    async updateUser(id, data){
         const updatedUser = await userRepository.update(id, data);
         if (!updatedUser) throw new Error("Utilisateur non trouvé.");
         return updatedUser;

@@ -20,6 +20,6 @@ router
     .delete(protect, admin, UserController.deleteUser)
     .put(protect, admin, UserController.updateUser);
 
-router.get("/", protect, admin, UserController.getUsers);
+router.get("/", protect, admin, UserController.getAllUser);
 
 export default router;
